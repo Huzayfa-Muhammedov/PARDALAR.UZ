@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PARDA KATALOG</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/Логотип компании _Menga Pardalar_.png">
+  <link rel="icon" type="image/x-icon" href="./img/Логотип компании _Menga Pardalar_.png">
+  <style>
+    :root{
+      --bg:#f6fbfa;
+      --card:#ffffff;
+      --accent:#0b6b63; /* dark-cyan */
+      --accent-2:#14a078; /* green */
+      --muted:#55606a;
+      --text:#05201d;
+      --radius:12px;
+      --max-width:1320px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0;background:var(--bg);color:var(--text);display:flex;justify-content:center}
+    .wrap{width:100%;max-width:var(--max-width);padding:18px}
+
+    /* Header */
+    header{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:14px;background:linear-gradient(180deg, rgba(11,107,99,0.06), rgba(20,160,120,0.02));border-radius:14px}
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{width:56px;height:56px;border-radius:12px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px}
+    .title{display:flex;flex-direction:column}
+    .title h1{font-size:18px;margin:0}
+    .title p{margin:0;color:var(--muted);font-size:13px}
+
+    .search{flex:1;max-width:560px;margin-left:12px}
+    .search input{width:100%;padding:12px 14px;border-radius:12px;border:1px solid rgba(5,32,29,0.06);outline:none;font-size:14px}
+
+    /* Filters row */
+    .filters{display:flex;gap:10px;margin:14px 0;flex-wrap:wrap}
+    .filters select{padding:10px;border-radius:10px;border:1px solid rgba(5,32,29,0.06);background:var(--card)}
+
+    /* Grid */
+    .grid{display:grid;gap:16px}
+    /* responsive as requested: start from 300px up to 1350px */
+    @media (min-width:300px){.grid{grid-template-columns:repeat(2,1fr);}}
+    @media (min-width:500px){.grid{grid-template-columns:repeat(3,1fr);}}
+    @media (min-width:900px){.grid{grid-template-columns:repeat(4,1fr);}}
+    @media (min-width:1350px){.grid{grid-template-columns:repeat(5,1fr);}}
+
+    .card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 24px rgba(8,20,20,0.06);display:flex;flex-direction:column;min-height:320px}
+    .thumb{height:180px;overflow:hidden}
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+    .card:hover .thumb img{transform:scale(1.04)}
+    .card-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .name{font-weight:700;color:var(--accent)}
+    .meta{color:var(--muted);font-size:13px}
+    .price{margin-top:6px;font-weight:800;color:var(--accent-2)}
+    .detail-btn{margin-top:auto;padding:10px;border-radius:10px;border:none;background:transparent;color:var(--accent);cursor:pointer;font-weight:700}
+
+    /* Modal - modern layout */
+    .modal{display:none;position:fixed;inset:0;background:rgba(2,6,7,0.45);align-items:center;justify-content:center;padding:20px;z-index:60}
+    .modal-inner{width:100%;max-width:980px;background:linear-gradient(180deg,#fff,#fbfffd);border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 40px 120px rgba(3,10,18,0.24)}
+    .modal-body{display:flex;flex-direction:column}
+    .modal-top{display:flex;gap:18px;padding:18px}
+    .modal-img{flex:1;min-height:320px;background:#f3f7f6;display:flex;align-items:center;justify-content:center}
+    .modal-img img{width:100%;height:100%;object-fit:cover}
+    .modal-info{flex:1;padding:6px 8px;display:flex;flex-direction:column}
+    .modal-info h2{margin:0 0 6px 0;color:var(--accent);font-size:20px}
+    .modal-info .price{font-size:18px;color:var(--accent-2);font-weight:900;margin-bottom:8px}
+    .modal-info .props{color:var(--muted);font-size:14px;margin-bottom:12px}
+    .modal-info .desc{font-size:14px;color:#263238;line-height:1.45}
+    .modal-actions{display:flex;gap:10px;align-items:center;padding:14px;border-top:1px solid rgba(2,6,7,0.04);justify-content:flex-end}
+    .close-btn{background:transparent;border:1px solid rgba(2,6,7,0.06);padding:8px 12px;border-radius:10px;cursor:pointer}
+
+    /* wide screens modal layout */
+    @media(min-width:900px){
+      .modal-body{flex-direction:row}
+      .modal-top{padding:28px}
+      .modal-img{flex:1.1}
+      .modal-info{flex:0.9}
+      .modal-inner{flex-direction:row;height:min(72vh,800px)}
+      .modal-body{height:100%}
+      .modal-actions{position:relative}
+    }
+
+    /* small screens tweaks */
+    @media(max-width:499px){
+      header{flex-direction:column;align-items:start}
+      .search{width:100%;margin-left:0}
+      .logo{width:48px;height:48px}
+    }
+
+    footer{margin-top:20px;padding:18px 0;color:var(--muted);font-size:13px;text-align:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div style="display:flex;align-items:center;gap:12px;width:100%;">
+        <div class="brand">
+          <div class="logo"><img style="width: 60px; border-radius: 10px; background-color: white;" src="./img/Логотип компании _Menga Pardalar_.png" alt=""></div>
+          <div class="title">
+            <h1>Menga pardalar</h1>
+            <p>Chiroyli va sifatli pardalar — katalogi</p>
+          </div>
+        </div>
+        <div class="search" style="margin-left:12px;">
+          <input id="searchInput" type="search" placeholder="Qidiruv: nom, rang yoki material...">
+        </div>
+      </div>
+
+      <div class="filters" style="width:100%;">
+        <select id="sizeFilter"><option value="">O'lcham: Hammasi</option><option value="1.2x1.8">1.2 × 1.8 m</option><option value="1.5x2">1.5 × 2 m</option><option value="2x3">2 × 3 m</option><option value="3x4">3 × 4 m</option></select>
+        <select id="materialFilter"><option value="">Material: Hammasi</option><option value="Jun">Jun</option><option value="Sintetik">Sintetik</option></select>
+        <select id="sort"><option value="">Tartib: Mashhur</option><option value="price-asc">Narxi: arzon → qimmat</option><option value="price-desc">Narxi: qimmat → arzon</option></select>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid" id="productsGrid" aria-live="polite"></section>
+    </main>
+
+    <footer>© {2025} Parda Katalogi — Barcha huquqlar himoyalangan</footer>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal" id="productModal" role="dialog" aria-modal="true">
+    <div class="modal-inner">
+      <div class="modal-body" id="modalBody">
+        <div class="modal-top">
+          <div class="modal-img"><img id="modalImg" src="" alt=""></div>
+          <div class="modal-info">
+            <h2 id="modalTitle">Mahsulot nomi</h2>
+            <div class="price" id="modalPrice">Narxi</div>
+            <div class="props" id="modalProps">Material · O‘lcham</div>
+            <div class="desc" id="modalDesc">Tavsif</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="close-btn" id="closeModal">Yopish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const PRODUCTS = [
+      {id:1,name:'Sharqona gilam',price:1200000,size:'2x3 m',material:'Jun',img:'https://source.unsplash.com/800x600/?persian,carpet',description:'Anʼanaviy sharqona naqshlarga ega yuqori sifatli jun gilam. Uyning markaziy joylari uchun juda mos.'},
+      {id:2,name:'Beige klassik',price:950000,size:'1.5x2.5 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?beige,carpet',description:'Yumshoq va oson tozalanuvchi bej rangli gilam — zamonaviy interyerlarga mos.'},
+      {id:3,name:'Klassik naqshli',price:2100000,size:'3x4 m',material:'Jun',img:'https://source.unsplash.com/800x600/?vintage,carpet',description:'Keng xonalar uchun mo‘ljallangan klassik naqshli gilam. Qo‘lbola tikuv effektiga o‘xshash ko‘rinish.'},
+      {id:4,name:'Minimalist gilam',price:800000,size:'1.5x2 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?minimal,carpet',description:'Oddiy chiziqlar va yumshoq tonlar — minimal dekor uchun ideal.'},
+      {id:5,name:'Turk gilami',price:1500000,size:'2x3 m',material:'Jun',img:'https://source.unsplash.com/800x600/?turkish,carpet',description:'Anʼanaviy turk naqshlari bilan bezatilgan sifatli gilam.'},
+      {id:6,name:'Modern gilam',price:1050000,size:'2x2.5 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?modern,carpet',description:'Zamonaviy grafik naqsh va yuqori chidamlilik.'},
+      {id:7,name:'Vintage uslub',price:1800000,size:'2.5x3.5 m',material:'Jun',img:'https://source.unsplash.com/800x600/?vintagepattern,carpet',description:'Yoshartirilgan vintage dizayn — nostaljik muhit yaratadi.'},
+      {id:8,name:'Qo‘lbola gilam',price:3200000,size:'3x4 m',material:'Jun',img:'https://source.unsplash.com/800x600/?handmade,carpet',description:'Haqiqiy hunarmandchilik namunasi — har biri noyob.'},
+      {id:9,name:'Bolalar gilami',price:600000,size:'1.2x1.8 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?kids,carpet',description:'Yumshoq, xavfsiz va rang-barang — bolalarxonaga mos.'},
+      {id:10,name:'Ofis gilami',price:1000000,size:'2x2.5 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?office,carpet',description:'Oddiy va amaliy — ofis uchun ideal.'},
+      {id:11,name:'Luks gilam',price:4500000,size:'3x4 m',material:'Jun',img:'https://source.unsplash.com/800x600/?luxury,carpet',description:'Eksklyuziv xonalar uchun premium darajadagi gilam.'},
+      {id:12,name:'Persian style',price:5000000,size:'3x5 m',material:'Jun',img:'https://source.unsplash.com/800x600/?persianrug,carpet',description:'Klassik fors naqshlari — anʼanaviy va bezakli.'},
+      {id:13,name:'Oq naqshli gilam',price:1700000,size:'2x3 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?white,carpet',description:'Yengil va nafis — yorqin interyerlar uchun.'},
+      {id:14,name:'Zamonaviy naqsh',price:2200000,size:'2x3 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?geometric,carpet',description:'Geometrik naqshlar bilan zamonaviy kayfiyat.'},
+      {id:15,name:'Rustik gilam',price:2800000,size:'2.5x3.5 m',material:'Jun',img:'https://source.unsplash.com/800x600/?rustic,carpet',description:'Tabiiy va issiq ohang — rustik dekor uchun.'},
+      {id:16,name:'Boho style gilam',price:1900000,size:'2x3 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?boho,carpet',description:'Boho elementlari bilan erkin va ijodiy ko‘rinish.'},
+      {id:17,name:'Chiroyli naqsh',price:2600000,size:'3x4 m',material:'Jun',img:'https://source.unsplash.com/800x600/?pattern,carpet',description:'Murakkab naqshlar va jonli ranglar — eʼtiborni tortadi.'},
+      {id:18,name:'Premium gilam',price:6500000,size:'4x5 m',material:'Jun',img:'https://source.unsplash.com/800x600/?premium,carpet',description:'Eng yuqori sifat va material — katta maydonlar uchun.'},
+      {id:19,name:'Oddiy gilam',price:700000,size:'1.5x2 m',material:'Sintetik',img:'https://source.unsplash.com/800x600/?simple,carpet',description:'Oddiy va muvaffaqiyatli variant — budjetga mos.'},
+      {id:20,name:'Chiroyli klassik',price:3100000,size:'3x4 m',material:'Jun',img:'https://source.unsplash.com/800x600/?classic,carpet',description:'Katta xonalar uchun klassik va nafis gilam.'}
+    ];
+
+    // ---- UI refs ----
+    const grid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const sizeFilter = document.getElementById('sizeFilter');
+    const materialFilter = document.getElementById('materialFilter');
+    const sortSelect = document.getElementById('sort');
+
+    function formatPrice(num){ return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") + ' so\'m'; }
+
+    // Render products based on filters
+    function renderProducts(){
+      const q = (searchInput.value || '').trim().toLowerCase();
+      const size = sizeFilter.value;
+      const material = materialFilter.value;
+      const sort = sortSelect.value;
+
+      let list = PRODUCTS.filter(p=>{
+        if(q){
+          const inText = p.name.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q));
+          if(!inText) return false;
+        }
+        if(size && p.size!==size) return false;
+        if(material && p.material!==material) return false;
+        return true;
+      });
+
+      if(sort==='price-asc') list.sort((a,b)=>a.price-b.price);
+      if(sort==='price-desc') list.sort((a,b)=>b.price-a.price);
+
+      grid.innerHTML = '';
+      list.forEach(p => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        const priceText = formatPrice(p.price);
+        card.innerHTML = `
+          <div class="thumb"><img loading="lazy" src="${p.img}" alt="${p.name}"></div>
+          <div class="card-body">
+            <div class="name">${p.name}</div>
+            <div class="meta">${p.material} · ${p.size}</div>
+            <div class="price">${priceText}</div>
+            <button class="detail-btn" onclick="openModal(${p.id})">Batafsil</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // if no results
+      if(list.length===0){
+        grid.innerHTML = '<div style="padding:30px;text-align:center;color:var(--muted)">Hech qanday mahsulot topilmadi.</div>';
+      }
+    }
+
+    // Modal logic
+    const modal = document.getElementById('productModal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalProps = document.getElementById('modalProps');
+    const modalDesc = document.getElementById('modalDesc');
+    const closeModal = document.getElementById('closeModal');
+
+    function openModal(id){
+      const p = PRODUCTS.find(x=>x.id===id);
+      if(!p) return;
+      modalImg.src = p.img;
+      modalTitle.textContent = p.name;
+      modalPrice.textContent = formatPrice(p.price);
+      modalProps.textContent = `${p.material} · ${p.size}`;
+      modalDesc.textContent = p.description || '';
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModalFunc(){ modal.style.display='none'; document.body.style.overflow='auto'; }
+    closeModal.addEventListener('click', closeModalFunc);
+    modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModalFunc(); });
+
+    // events
+    searchInput.addEventListener('input', renderProducts);
+    sizeFilter.addEventListener('change', renderProducts);
+    materialFilter.addEventListener('change', renderProducts);
+    sortSelect.addEventListener('change', renderProducts);
+
+    // initial
+    renderProducts();
+  </script>
+</body>
+</html>
+
+
+<!-- 2 qism -->
+
+<!-- <!doctype html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gilamlar — Onlayn Do'kon</title>
+  <style>
+    /* Mobile-first modern style using dark-cyan / green / black palette */
+    :root{
+      --bg:#f7fbfb;
+      --card:#ffffff;
+      --accent:#007b7b; /* dark cyan */
+      --accent-2:#20a26a; /* green */
+      --muted:#6b7280;
+      --black:#0b0b0b;
+      --rounded:14px;
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,system-ui,Arial,sans-serif;margin:0;background:var(--bg);color:var(--black);line-height:1.4}
+    header{background:linear-gradient(180deg,var(--accent) 0%, #eaf8f6 100%);padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.06)}
+    .nav{display:flex;align-items:center;gap:12px;justify-content:space-between;max-width:1100px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:44px;height:44px;border-radius:10px;background:var(--black);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .brand h1{font-size:18px;margin:0}
+    .search{flex:1;margin-left:12px}
+    .search input{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.08)}
+    .icons{display:flex;gap:8px;align-items:center}
+    .icon-btn{background:var(--card);padding:8px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,0.05);border:none}
+
+    main{max-width:1100px;margin:18px auto;padding:0 12px}
+    .hero{display:flex;gap:12px;align-items:center;background:linear-gradient(90deg, rgba(32,162,106,0.08), rgba(0,123,123,0.04));padding:14px;border-radius:12px}
+    .hero .left{flex:1}
+    .hero h2{margin:0 0 6px 0;font-size:20px}
+    .hero p{margin:0;color:var(--muted)}
+    .hero img{width:120px;height:80px;object-fit:cover;border-radius:8px}
+
+    /* filters */
+    .filters{display:flex;gap:8px;margin:14px 0;align-items:center}
+    .filter-select{padding:8px 10px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:var(--card)}
+
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .card{background:var(--card);border-radius:12px;padding:10px;box-shadow:0 6px 18px rgba(3,10,18,0.04);display:flex;flex-direction:column}
+    .card img{width:100%;height:160px;object-fit:cover;border-radius:10px}
+    .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+    .meta .title{font-weight:600}
+    .price{font-weight:700;color:var(--accent-2)}
+    .add{margin-top:10px;display:flex;gap:8px}
+    .btn{flex:1;padding:10px;border-radius:10px;border:none;background:var(--accent);color:#fff;font-weight:600}
+    .btn.secondary{background:transparent;border:1px solid rgba(0,0,0,0.08);color:var(--black)}
+
+    /* cart floating button and panel */
+    .cart-fab{position:fixed;right:18px;bottom:18px;background:var(--accent-2);color:#fff;border-radius:999px;padding:12px 16px;box-shadow:0 12px 30px rgba(32,162,106,0.18);display:flex;gap:8px;align-items:center;border:none}
+    .cart-panel{position:fixed;right:16px;bottom:80px;width:340px;max-height:70vh;background:var(--card);border-radius:12px;padding:12px;box-shadow:0 20px 50px rgba(3,10,18,0.12);overflow:auto}
+    .cart-item{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(0,0,0,0.04)}
+    .cart-item img{width:64px;height:48px;object-fit:cover;border-radius:8px}
+    .qty{display:flex;gap:6px;align-items:center}
+    .qty input{width:56px;padding:6px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);text-align:center}
+    .checkout{margin-top:10px}
+
+    /* modal overlay */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;padding:16px}
+    .modal{background:var(--card);border-radius:12px;padding:16px;max-width:520px;width:100%}
+    .form-row{display:flex;gap:8px;margin-bottom:10px}
+    .form-row input, .form-row textarea{flex:1;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+
+    footer{max-width:1100px;margin:24px auto;padding:18px 12px;color:var(--muted)}
+
+    /* responsiveness */
+    @media(min-width:800px){
+      .grid{grid-template-columns:repeat(3,1fr)}
+      .search{max-width:520px}
+    }
+    @media(min-width:1100px){
+      .grid{grid-template-columns:repeat(4,1fr)}
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav">
+      <div class="brand">
+        <div class="logo">G</div>
+        <div>
+          <h1>Gilamlar</h1>
+          <div style="font-size:12px;color:var(--muted)">Onlayn do'kon</div>
+        </div>
+      </div>
+      <div class="search">
+        <input id="searchInput" type="search" placeholder="Qidiruv: gilam nomi yoki rang..." />
+      </div>
+      <div class="icons">
+        <button class="icon-btn" id="filterBtn">Filtr</button>
+         <button class="icon-btn" id="cartBtn">Savatcha (<span id="cartCount">0</span>)</button> 
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="left">
+        <h2>Sifatli gilamlar — har o'lcham va rangda</h2>
+        <p>Tez yetkazib berish — mobil uchun optimallashtirilgan dizayn. Pastdagi katalogdan tanlang.</p>
+      </div>
+      <img src="https://images.unsplash.com/photo-1602524818516-8a0b02f0d6d0?auto=format&fit=crop&w=400&q=60" alt="gilam" />
+    </section>
+
+    <div class="filters" style="margin-top:12px">
+      <select id="sizeFilter" class="filter-select">
+        <option value="">O'lcham: Hammasi</option>
+        <option value="120x180">120 × 180 cm</option>
+        <option value="160x230">160 × 230 cm</option>
+        <option value="200x300">200 × 300 cm</option>
+      </select>
+      <select id="colorFilter" class="filter-select">
+        <option value="">Rang: Hammasi</option>
+        <option value="qizil">Qizil</option>
+        <option value="yashil">Yashil</option>
+        <option value="kok">Ko'k</option>
+        <option value="beige">Beige</option>
+      </select>
+      <select id="sort" class="filter-select">
+        <option value="">Tartib: Mashhur</option>
+        <option value="price-asc">Narxi: arzon → qimmat</option>
+        <option value="price-desc">Narxi: qimmat → arzon</option>
+      </select>
+    </div>
+
+    <section class="grid" id="productsGrid">
+       cards dynamically injected -->
+    <!-- </section>
+
+  </main>
+
+  <button class="cart-fab" id="openCart">🛒 Savatcha (<span id="fabCount">0</span>)</button>
+
+  <div class="cart-panel" id="cartPanel" style="display:none">
+    <h3>Sizning savatchingiz</h3>
+    <div id="cartItems"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+      <div><strong>Jami:</strong> <span id="cartTotal">0</span> UZS</div>
+      <div>
+        <button class="btn secondary" id="continueShop">Do'kon</button>
+        <button class="btn" id="checkoutBtn">Zakaz berish</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h3>Buyurtma ma'lumotlari</h3>
+      <div class="form-row">
+        <input id="custName" placeholder="Ism va Familiya" />
+        <input id="custPhone" placeholder="Telefon raqam" />
+      </div>
+      <div class="form-row">
+        <input id="custAddress" placeholder="Manzil" />
+      </div>
+      <div style="margin-top:6px">
+        <textarea id="custNote" placeholder="Qo'shimcha izoh (ixtiyoriy)" rows="3" style="width:100%;border-radius:8px;padding:8px;border:1px solid rgba(0,0,0,0.06)"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button class="btn secondary" id="modalClose">Bekor qilish</button>
+        <button class="btn" id="sendOrder">Buyurtmani yuborish</button>
+      </div>
+
+      <p style="font-size:12px;color:var(--muted);margin-top:10px">Ma'lumotlar mahfiy saqlanadi. Buyurtma Telegram orqali sizga yuboriladi.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+      <div>
+        <strong>Gilamlar</strong><div style="font-size:13px;color:var(--muted)">Sizning ishonchli gilam do'koningiz</div>
+      </div>
+      <div style="font-size:13px;color:var(--muted);margin-top:8px">Telegram: @yourchannel &nbsp;·&nbsp; Instagram: @yourinstagram</div>
+    </div>
+  </footer>
+
+  <script>
+    // --- SAMPLE PRODUCTS: replace images and data with your real products ---
+    const PRODUCTS = [
+      {id:1, title:'Zamonaviy Qizil Gilam', price:250000, size:'160x230', color:'qizil', img:'https://images.unsplash.com/photo-1602524818516-8a0b02f0d6d0?auto=format&fit=crop&w=800&q=60'},
+      {id:2, title:'Beige Klassik', price:180000, size:'120x180', color:'beige', img:'https://images.unsplash.com/photo-1582719478250-9e6f9dd1c7c9?auto=format&fit=crop&w=800&q=60'},
+      {id:3, title:'Ko\'k Geometrik', price:320000, size:'200x300', color:'kok', img:'https://images.unsplash.com/photo-1549187774-b4e9b0445b1e?auto=format&fit=crop&w=800&q=60'},
+      {id:4, title:'Yashil Zamonaviy', price:220000, size:'160x230', color:'yashil', img:'https://images.unsplash.com/photo-1603988366007-60d46b3a4b5b?auto=format&fit=crop&w=800&q=60'},
+      {id:5, title:'Vintage Bej', price:290000, size:'200x300', color:'beige', img:'https://images.unsplash.com/photo-1540574163026-643ea20ade25?auto=format&fit=crop&w=800&q=60'},
+      {id:6, title:'Minimal Qora', price:150000, size:'120x180', color:'kok', img:'https://images.unsplash.com/photo-1616627563771-3b5fdd9c1a2b?auto=format&fit=crop&w=800&q=60'}
+    ];
+
+    // LocalStorage keys
+    const CART_KEY = 'gilam_cart_v1';
+
+    // UI references
+    const productsGrid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('searchInput');
+    const sizeFilter = document.getElementById('sizeFilter');
+    const colorFilter = document.getElementById('colorFilter');
+    const sortSelect = document.getElementById('sort');
+    const cartCountEl = document.getElementById('cartCount');
+    const fabCount = document.getElementById('fabCount');
+    const openCartBtn = document.getElementById('openCart');
+    const cartPanel = document.getElementById('cartPanel');
+    const cartItemsEl = document.getElementById('cartItems');
+    const cartTotalEl = document.getElementById('cartTotal');
+    const continueShop = document.getElementById('continueShop');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalClose = document.getElementById('modalClose');
+    const sendOrderBtn = document.getElementById('sendOrder');
+
+    // Cart state
+    let cart = JSON.parse(localStorage.getItem(CART_KEY) || '{}');
+
+    // Helpers
+    function saveCart(){ localStorage.setItem(CART_KEY, JSON.stringify(cart)); updateCartUI(); }
+    function addToCart(productId){ const p = PRODUCTS.find(x=>x.id==productId); if(!p) return; cart[productId] = cart[productId] ? cart[productId] + 1 : 1; saveCart(); }
+    function removeFromCart(productId){ delete cart[productId]; saveCart(); }
+    function setQty(productId,q){ if(q<=0) return removeFromCart(productId); cart[productId]=q; saveCart(); }
+    function cartItems(){ return Object.keys(cart).map(id=>{ const p = PRODUCTS.find(x=>x.id==id); return {product:p, qty:cart[id]}; }); }
+    function cartTotal(){ return cartItems().reduce((s,i)=>s + i.product.price * i.qty,0); }
+
+    // Render products
+    function renderProducts(){
+      const q = searchInput.value.trim().toLowerCase();
+      const size = sizeFilter.value;
+      const color = colorFilter.value;
+      const sort = sortSelect.value;
+      let list = PRODUCTS.filter(p=>{
+        if(q && !(p.title.toLowerCase().includes(q) || p.color.toLowerCase().includes(q))) return false;
+        if(size && p.size!==size) return false;
+        if(color && p.color!==color) return false;
+        return true;
+      });
+      if(sort==='price-asc') list.sort((a,b)=>a.price-b.price);
+      if(sort==='price-desc') list.sort((a,b)=>b.price-a.price);
+
+      productsGrid.innerHTML = list.map(p=>`
+        <article class="card">
+          <img src="${p.img}" alt="${p.title}" loading="lazy">
+          <div class="meta">
+            <div>
+              <div class="title">${p.title}</div>
+              <div style="font-size:12px;color:var(--muted)">${p.size} · ${p.color}</div>
+            </div>
+            <div class="price">${p.price.toLocaleString('uz-UZ')} UZS</div>
+          </div>
+          <div class="add">
+            <button class="btn secondary" onclick="viewProduct(${p.id})">Batafsil</button>
+            <button class="btn" onclick="addToCart(${p.id});">Savatchaga qo'shish</button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Initial render
+    renderProducts(); updateCartUI();
+
+    // Event listeners
+    searchInput.addEventListener('input',()=>renderProducts());
+    sizeFilter.addEventListener('change',()=>renderProducts());
+    colorFilter.addEventListener('change',()=>renderProducts());
+    sortSelect.addEventListener('change',()=>renderProducts());
+
+    // Cart UI
+    function updateCartUI(){
+      const items = cartItems();
+      const count = items.reduce((s,i)=>s+i.qty,0);
+      cartCountEl.textContent = count;
+      fabCount.textContent = count;
+
+      cartItemsEl.innerHTML = items.length ? items.map(it=>`
+        <div class="cart-item">
+          <img src="${it.product.img}" alt="${it.product.title}">
+          <div style="flex:1">
+            <div style="font-weight:600">${it.product.title}</div>
+            <div style="font-size:13px;color:var(--muted)">${it.product.size} · ${it.product.color}</div>
+            <div style="margin-top:6px;display:flex;gap:8px;align-items:center">
+              <div class="qty"><button onclick="changeQty(${it.product.id}, ${Math.max(1,it.qty-1)})">-</button>
+                <input type="number" value="${it.qty}" min="1" onchange="setQtyFromInput(${it.product.id}, this.value)" />
+                <button onclick="changeQty(${it.product.id}, ${it.qty+1})">+</button>
+              </div>
+              <div style="margin-left:auto;font-weight:700">${(it.product.price*it.qty).toLocaleString('uz-UZ')} UZS</div>
+              <button onclick="removeFromCart(${it.product.id})" style="background:transparent;border:none;color:var(--muted);margin-left:6px">✖</button>
+            </div>
+          </div>
+        </div>
+      `).join('') : '<div style="padding:18px;color:var(--muted)">Savatcha bo\'sh</div>';
+
+      cartTotalEl.textContent = cartTotal().toLocaleString('uz-UZ');
+    }
+
+    // exposed functions for inline onclicks
+    window.addToCart = function(id){ addToCart(id); alert('Mahsulot savatchaga qo\'shildi'); }
+    window.removeFromCart = function(id){ removeFromCart(id); }
+    window.changeQty = function(id,q){ setQty(id,q); }
+    window.setQtyFromInput = function(id,q){ q = parseInt(q)||1; setQty(id,q); }
+    window.viewProduct = function(id){ const p = PRODUCTS.find(x=>x.id==id); if(!p) return; alert(p.title + '\n' + p.size + ' · ' + p.color + '\n' + p.price.toLocaleString('uz-UZ') + ' UZS'); }
+
+    // open/close cart panel
+    document.getElementById('cartBtn').addEventListener('click', ()=>{ cartPanel.style.display = cartPanel.style.display === 'none' ? 'block' : 'none'; });
+    openCartBtn.addEventListener('click', ()=>{ cartPanel.style.display = cartPanel.style.display === 'none' ? 'block' : 'none'; });
+    continueShop.addEventListener('click', ()=>{ cartPanel.style.display='none'; });
+    checkoutBtn.addEventListener('click', ()=>{ if(Object.keys(cart).length===0){ alert('Savatcha bo\'sh'); return; } modalBackdrop.style.display='flex'; });
+
+    modalClose.addEventListener('click', ()=>{ modalBackdrop.style.display='none'; });
+
+    // Sending order to Telegram
+    sendOrderBtn.addEventListener('click', async ()=>{
+      const name = document.getElementById('custName').value.trim();
+      const phone = document.getElementById('custPhone').value.trim();
+      const address = document.getElementById('custAddress').value.trim();
+      const note = document.getElementById('custNote').value.trim();
+      if(!name || !phone || !address){ alert('Iltimos, ism, telefon va manzilni to\'ldiring'); return; }
+
+      const items = cartItems();
+      let text = `<b>Yangi Buyurtma</b>\n`;
+      text += `<b>Ism:</b> ${escapeHtml(name)}\n`;
+      text += `<b>Telefon:</b> ${escapeHtml(phone)}\n`;
+      text += `<b>Manzil:</b> ${escapeHtml(address)}\n`;
+      if(note) text += `<b>Izoh:</b> ${escapeHtml(note)}\n`;
+      text += `\n<b>Mahsulotlar:</b>\n`;
+      items.forEach(it=>{
+        text += `${escapeHtml(it.product.title)} — ${it.qty} × ${it.product.price.toLocaleString('uz-UZ')} UZS\n`;
+      });
+      text += `\n<b>Jami:</b> ${cartTotal().toLocaleString('uz-UZ')} UZS`;
+
+      // === IMPORTANT: replace BOT_TOKEN and CHAT_ID with your values ===
+      const BOT_TOKEN = '7699754176:AAGgo-SIGYyFTeh-afAL1ZXVVYSAGbCkqQk';
+      const CHAT_ID = '6029723281';
+
+      if(BOT_TOKEN.startsWith('REPLACE')){
+        alert('Buyurtma tayyorlandi (lokalda) — ammo Telegram token va chat_id o\'rnatilmagan. Kodga BOT_TOKEN va CHAT_ID o\'rnating.');
+        console.log('Order message:\n', text);
+        // clear cart if you want
+        // cart = {}; saveCart(); modalBackdrop.style.display='none';
+        return;
+      }
+
+      try{
+        // send message via Telegram Bot API
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        const body = new URLSearchParams({ chat_id: CHAT_ID, text, parse_mode: 'HTML' });
+        const res = await fetch(url, { method:'POST', body });
+        const data = await res.json();
+        if(data.ok){ alert('Buyurtmangiz yuborildi!'); cart = {}; saveCart(); modalBackdrop.style.display='none'; cartPanel.style.display='none'; }
+        else{ alert('Xatolik: buyurtma yuborilmadi. Konsolga qarang.'); console.error(data); }
+      }catch(err){ console.error(err); alert('Xatolik: internetga ulangansizmi?'); }
+    });
+
+    function escapeHtml(unsafe){ return unsafe.replace(/[&<>"']/g, function(m){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[m]; }); }
+
+  </script>
+</body>
+</html> --> 
+
+<!-- 3 qism -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PARDA KATALOG</title>
+  <link rel="stylesheet" href="./main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css
+  ">
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/Логотип компании _Menga Pardalar_.png">
+  <link rel="icon" type="image/x-icon" href="./img/Логотип компании _Menga Pardalar_.png">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+       
+    </div>
+  </header>
+
+
+  <script class="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js
+  "></script>
+</body>
+</html>
+ -->

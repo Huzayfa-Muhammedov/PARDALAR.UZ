@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Parda katalog — 24 ta mahsulot</title>
+  <!-- FontAwesome ulash uchun -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="./img/Логотип компании _Menga Pardalar_.png">
+  <link rel="icon" type="image/x-icon" href="./img/Логотип компании _Menga Pardalar_.png">
+  <style>
+    /* --- BASIC --- */
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',sans-serif;background:#fff;color:#3e2723;line-height:1.3}
+    a{color:inherit;text-decoration:none}
+
+    /* --- HEADER (siz bergan header bilan mos) --- */
+    header{
+      width:100%;
+      background:#f5f5f5;
+      color:#3e2723;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:10px 20px;
+      flex-wrap:wrap;
+      gap:10px;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1);
+      position:sticky; top:0; z-index:50;
+    }
+    .logo img{width:60px;cursor:pointer}
+    .search-box{flex:1;min-width:180px}
+    .search-box input{
+      width:100%;padding:8px 12px;border-radius:20px;border:1px solid #ccc;font-size:14px;
+    }
+    .center{display:flex;align-items:center;gap:15px}
+    .center select{padding:6px 14px;border:none;border-radius:6px;background:#6d4c41;color:#fff}
+    .address{background:#efebe9;padding:6px 12px;border-radius:6px}
+    .right{font-weight:600}
+    .hamburger{width:30px;height:22px;display:none;flex-direction:column;justify-content:space-between;cursor:pointer}
+    .hamburger span{height:3px;background:#3e2723;border-radius:3px;display:block}
+
+    @media (max-width:768px){
+      .center .address,.center select,.right{display:none}
+      .hamburger{display:flex}
+    }
+
+    /* --- MOBILE SIDEBAR --- */
+    .mobile-menu{
+      position:fixed;top:0;right:-100%;width:75%;max-width:320px;height:100%;
+      background:#3e2723;color:#fff;padding:18px;transition:right .28s ease;z-index:100;
+      display:flex;flex-direction:column;gap:14px;overflow:auto;
+    }
+    .mobile-menu.active{right:0}
+    .mobile-menu .close{align-self:flex-end;font-size:22px;cursor:pointer}
+    .mobile-menu a, .mobile-menu .menu-row {
+      background:#fff;color:#3e2723;border-radius:8px;padding:10px;font-weight:600;
+    }
+
+    /* --- GRID OF ITEMS --- */
+    main {padding:20px; max-width:1350px; margin:0 auto 60px;}
+    .grid {
+      display:grid;
+      gap:18px;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    }
+
+    .card {
+      background:#fff;border-radius:12px;border:1px solid #e6e0db;
+      box-shadow:0 6px 18px rgba(15,17,18,0.04);overflow:hidden;display:flex;flex-direction:column;
+      transition:transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(15,17,18,0.09)}
+    .card .thumb{width:100%;height:150px;overflow:hidden;background:#f2f0ed}
+    .card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+    .card .body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center}
+    .card h4{font-size:16px;color:#3e2723;margin-top:6px}
+    .card .size{font-size:13px;color:#5a3825} /* jigarang */
+    .card .price{font-size:16px;font-weight:700;color:#1e8a3e} /* yashil */
+    .card .actions{display:flex;gap:10px;margin-top:auto;width:100%;padding-bottom:8px;justify-content:center}
+    .card button{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:linear-gradient(135deg,#a9745b,#5a3825);color:#fff}
+    .btn-ghost{background:transparent;border:1px solid rgba(62,39,35,0.08);color:#3e2723}
+
+    /* --- MODAL --- */
+    .modal {
+      display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;
+      align-items:center;justify-content:center;padding:20px;
+    }
+    .modal.open{display:flex}
+    .modal-card{
+      width:100%;max-width:540px;background:#fff;border-radius:12px;padding:18px;position:relative;
+      box-shadow:0 20px 50px rgba(15,17,18,0.2);
+    }
+    .modal-close{position:absolute;right:14px;top:12px;font-size:20px;cursor:pointer}
+    .modal-img{width:100%;height:260px;object-fit:cover;border-radius:8px;margin-bottom:12px}
+    .modal h3{color:#3e2723;margin-bottom:8px}
+    .modal .desc{color:#5a3825;margin-bottom:10px} /* jigarang */
+    .modal .meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+    .modal .meta .size{color:#5a3825}
+    .modal .meta .price{color:#1e8a3e;font-weight:700}
+
+    /* small screens */
+    @media (max-width:420px){
+      .card .thumb{height:130px}
+      .modal-img{height:180px}
+    }
+
+    /* focus outline for accessibility */
+    button:focus, input:focus {outline:2px solid rgba(26, 115, 232, 0.12); outline-offset:2px}
+  </style>
+</head>
+<body>
+
+  <!-- HEADER (unchanged main structure) -->
+  <header>
+    <div class="logo"><img src="./img/Логотип компании _Menga Pardalar_.png" alt="Logo"></div>
+
+    <div class="search-box">
+      <input id="search" type="text" placeholder="Mahsulot nomi bilan qidirish (masalan 'Parda 7')">
+    </div>
+
+    <div class="center">
+      <div class="address">📍 Toshkent, Chilonzor 15</div>
+      <select aria-label="Til">
+        <option>O‘zbekcha</option>
+        <option>Русский</option>
+        <option>English</option>
+      </select>
+    </div>
+
+    <div class="right">📞 +998 90 123 45 67</div>
+
+    <div class="hamburger" id="hamburger" aria-label="Menu" title="Menu">
+      <span></span><span></span><span></span>
+    </div>
+  </header>
+
+  <!-- MOBILE SIDEBAR -->
+  <nav id="mobileMenu" class="mobile-menu" aria-hidden="true">
+    <div class="close" id="mobileClose">✖</div>
+    <div class="menu-row">Biz haqimizda</div>
+    <a href="tel:+998901234567">📞 +998 90 123 45 67</a>
+    <div class="menu-row">📍 Toshkent, Chilonzor 15</div>
+    <!-- qo'shimcha tugmalar (15 ta kerak bo'lsa shu yerga qo'shing) -->
+  </nav>
+
+  <!-- MAIN GRID -->
+  <main>
+    <section class="grid" id="grid">
+      <!-- JS orqali 24 ta karta qo'yiladi -->
+    </section>
+  </main>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal" role="dialog" aria-hidden="true" aria-labelledby="modalTitle">
+    <div class="modal-card" role="document">
+      <button class="modal-close" id="modalClose" aria-label="Yopish">✖</button>
+      <img id="modalImg" class="modal-img" src="" alt="">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc" class="desc"></p>
+      <div class="meta">
+        <div class="size" id="modalSize"></div>
+        <div class="price" id="modalPrice"></div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ====== Data: 24 mahsulot (har biri alohida tavsif bilan) ====== */
+const products = [
+  {name:"Parda 1", img:"./img/parda 1.jfif", size:"150x200 cm", price:"120 000 so'm", desc:"Parda 1 — yumshoq teksturaga ega, kundalik foydalanish uchun ideal Material:"},
+  {name:"Parda 2", img:"./img/parda 2.jfif", size:"160x210 cm", price:"110 000 so'm", desc:"Parda 2 — klassik uslub, yorug‘likni yumshoq so‘ndiradi."},
+  {name:"Parda 3", img:"./img/parda 3.jfif", size:"170x220 cm", price:"130 000 so'm", desc:"Parda 3 — yaxshi pardoz va mustahkam tikuvlarga ega."},
+  {name:"Parda 4", img:"https://picsum.photos/seed/p4/600/400", size:"150x180 cm", price:"100 000 so'm", desc:"Parda 4 — ixcham xonalar uchun mos, yengil material."},
+  {name:"Parda 5", img:"https://picsum.photos/seed/p5/600/400", size:"180x240 cm", price:"125 000 so'm", desc:"Parda 5 — zamonaviy dizayn, boy rang palitrasi."},
+  {name:"Parda 6", img:"https://picsum.photos/seed/p6/600/400", size:"200x250 cm", price:"140 000 so'm", desc:"Parda 6 — yuqori sifatli material va uzoq muddat xizmat."},
+  {name:"Parda 7", img:"https://picsum.photos/seed/p7/600/400", size:"160x200 cm", price:"115 000 so'm", desc:"Parda 7 — yengil yuviluvchi qoplama bilan ta'minlangan."},
+  {name:"Parda 8", img:"https://picsum.photos/seed/p8/600/400", size:"170x210 cm", price:"135 000 so'm", desc:"Parda 8 — bezakli to‘qilgan struktura, ziyo bilan o‘ynaydi."},
+  {name:"Parda 9", img:"https://picsum.photos/seed/p9/600/400", size:"150x190 cm", price:"95 000 so'm", desc:"Parda 9 — byudjetga mos, chiroyli tonlar."},
+  {name:"Parda 10", img:"https://picsum.photos/seed/p10/600/400", size:"180x200 cm", price:"150 000 so'm", desc:"Parda 10 — ofis va yirik xonalar uchun mos variant."},
+  {name:"Parda 11", img:"https://picsum.photos/seed/p11/600/400", size:"160x200 cm", price:"160 000 so'm", desc:"Parda 11 — ortiqcha shaklni saqlovchi mustahkam tolalar."},
+  {name:"Parda 12", img:"https://picsum.photos/seed/p12/600/400", size:"170x205 cm", price:"170 000 so'm", desc:"Parda 12 — ekologik toza mato, qulay tozalash."},
+  {name:"Parda 13", img:"https://picsum.photos/seed/p13/600/400", size:"175x220 cm", price:"180 000 so'm", desc:"Parda 13 — yuksak rulonga mos, yuqori drapirovka."},
+  {name:"Parda 14", img:"https://picsum.photos/seed/p14/600/400", size:"160x210 cm", price:"190 000 so'm", desc:"Parda 14 — shirali ko‘rinish, hashamatli uslub."},
+  {name:"Parda 15", img:"https://picsum.photos/seed/p15/600/400", size:"180x230 cm", price:"200 000 so'm", desc:"Parda 15 — issiqlikni saqlash xususiyati bilan."},
+  {name:"Parda 16", img:"https://picsum.photos/seed/p16/600/400", size:"160x200 cm", price:"210 000 so'm", desc:"Parda 16 — yorug‘lik barrieri va ozgina shaxsiy to‘sib qo‘yadi."},
+  {name:"Parda 17", img:"https://picsum.photos/seed/p17/600/400", size:"170x210 cm", price:"220 000 so'm", desc:"Parda 17 — ultra zamonaviy naqshlar va uslub."},
+  {name:"Parda 18", img:"https://picsum.photos/seed/p18/600/400", size:"200x240 cm", price:"230 000 so'm", desc:"Parda 18 — kattaroq deraza o‘lchamlari uchun ideal."},
+  {name:"Parda 19", img:"https://picsum.photos/seed/p19/600/400", size:"150x190 cm", price:"240 000 so'm", desc:"Parda 19 — eksklyuziv, cheklangan seriyadagi material."},
+  {name:"Parda 20", img:"https://picsum.photos/seed/p20/600/400", size:"180x220 cm", price:"250 000 so'm", desc:"Parda 20 — to‘qilgan bezaklar bilan boyitilgan."},
+  {name:"Parda 21", img:"https://picsum.photos/seed/p21/600/400", size:"170x210 cm", price:"260 000 so'm", desc:"Parda 21 — professional interyerlarni bezash uchun."},
+  {name:"Parda 22", img:"https://picsum.photos/seed/p22/600/400", size:"160x200 cm", price:"270 000 so'm", desc:"Parda 22 — yuqori darajada oqimga chidamli."},
+  {name:"Parda 23", img:"https://picsum.photos/seed/p23/600/400", size:"190x230 cm", price:"280 000 so'm", desc:"Parda 23 — maxsus to‘qilgan oltin ip bilan bezatilgan."},
+  {name:"Parda 24", img:"https://picsum.photos/seed/p24/600/400", size:"200x250 cm", price:"290 000 so'm", desc:"Parda 24 — premium segment, yetkazib berish bilan."}
+];
+
+/* ====== Render: grid of 24 cards ====== */
+const grid = document.getElementById('grid');
+
+products.forEach((p, idx) => {
+  const card = document.createElement('article');
+  card.className = 'card item';
+  card.setAttribute('data-index', idx);
+  card.innerHTML = `
+    <div class="thumb"><img src="${p.img}" alt="${p.name}"></div>
+    <div class="body">
+      <h4>${p.name}</h4>
+      <div class="size">${p.size}</div>
+      <div class="price">${p.price}</div>
+      <div class="actions">
+        <button class="btn-primary" type="button" data-idx="${idx}" aria-controls="modal">Batafsil</button>
+        
+      </div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+/* ====== Modal functions (global so inline onclick works) ====== */
+const modal = document.getElementById('modal');
+const modalImg = document.getElementById('modalImg');
+const modalTitle = document.getElementById('modalTitle');
+const modalDesc = document.getElementById('modalDesc');
+const modalSize = document.getElementById('modalSize');
+const modalPrice = document.getElementById('modalPrice');
+const modalClose = document.getElementById('modalClose');
+
+window.openModal = function(i){
+  const p = products[i];
+  modalImg.src = p.img;
+  modalImg.alt = p.name;
+  modalTitle.textContent = p.name;
+  modalDesc.textContent = p.desc;
+  modalSize.textContent = 'O‘lchami: ' + p.size;
+  modalPrice.textContent = 'Narxi: ' + p.price;
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+};
+
+function closeModal(){
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+/* close events */
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e) => { if(e.target === modal) closeModal(); });
+document.addEventListener('keydown', (e)=> { if(e.key === 'Escape') closeModal(); });
+
+/* Attach click handlers for all "Batafsil" buttons after render */
+document.querySelectorAll('.btn-primary').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    const i = Number(btn.getAttribute('data-idx'));
+    openModal(i);
+  });
+});
+
+/* ====== Search logic: exact-match priority, else includes ====== */
+const searchInput = document.getElementById('search');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  const cards = document.querySelectorAll('.card');
+
+  if(!q){
+    cards.forEach(c=> c.style.display = 'block');
+    return;
+  }
+
+  // exact matches
+  const exactIdxs = products.reduce((acc,p,i)=>{
+    if(p.name.toLowerCase() === q) acc.push(i);
+    return acc;
+  }, []);
+
+  if(exactIdxs.length){
+    cards.forEach(c=>{
+      const idx = Number(c.getAttribute('data-index'));
+      c.style.display = exactIdxs.includes(idx) ? 'block' : 'none';
+    });
+    return;
+  }
+
+  // fallback to includes
+  cards.forEach(c=>{
+    const idx = Number(c.getAttribute('data-index'));
+    const text = (products[idx].name + ' ' + products[idx].desc).toLowerCase();
+    c.style.display = text.includes(q) ? 'block' : 'none';
+  });
+});
+
+/* ====== Mobile menu toggle (hamburger) ====== */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+const mobileClose = document.getElementById('mobileClose');
+
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.toggle('active');
+  mobileMenu.setAttribute('aria-hidden', mobileMenu.classList.contains('active') ? 'false' : 'true');
+});
+mobileClose.addEventListener('click', () => {
+  mobileMenu.classList.remove('active');
+  mobileMenu.setAttribute('aria-hidden','true');
+});
+
+</script>
+
+
+<footer class="footer">
+  <div class="footer-top">
+    <div class="contact-box">
+      <i class="fa-solid fa-envelope"></i>
+      <div>
+        <h4>Elektron pochta</h4>
+        <p>info@biznis.com</p>
+      </div>
+    </div>
+    <div class="contact-box">
+      <i class="fa-solid fa-phone"></i>
+      <div>
+        <h4>Telefon</h4>
+        <p>+998 90 123 45 67</p>
+      </div>
+    </div>
+    <div class="contact-box">
+      <i class="fa-solid fa-location-dot"></i>
+      <div>
+        <h4>Manzil</h4>
+        <p>Toshkent sh., Chilonzor tumani</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="footer-col">
+      <h5>Sahifalar</h5>
+      <ul>
+        <li><a href="#">Biz haqimizda</a></li>
+        <li><a href="#">Tarix</a></li>
+        <li><a href="#">Missiyamiz</a></li>
+        <li><a href="#">Maqsadlar va loyihalar</a></li>
+        <li><a href="#">Yangiliklar</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Mahsulotlar</h5>
+      <ul>
+        <li><a href="./index.html">Asosiy sahifa</a></li>
+        <li><a href="#">Karnezlar</a></li>
+        <li><a href="#">Aksessuarlar</a></li>
+        <li><a href="#">To‘plamlar</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Hujjatlar</h5>
+      <ul>
+        <li><a href="#">Sifat sertifikati</a></li>
+        <li><a href="#">Ro‘yxatdan o‘tish</a></li>
+        <li><a href="#">Texnik hujjatlar</a></li>
+        <li><a href="#">Garantiya</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Ijtimoiy tarmoqlar</h5>
+      <div class="socials">
+        <a href="#"><i class="fa-brands fa-facebook"></i></a>
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background: #0f1b2b;
+  color: #fff;
+  padding: 50px 20px 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+.contact-box {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.contact-box i {
+  font-size: 28px;
+  background: linear-gradient(135deg, #a9745b, #5a3825);
+  padding: 15px;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.contact-box h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.contact-box p {
+  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.footer-bottom {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 30px;
+}
+
+.footer-col h5 {
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #e2c4a8;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+}
+
+.footer-col ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-col ul li a:hover {
+  color: #fff;
+}
+
+.socials a {
+  font-size: 22px;
+  color: #fff;
+  margin-right: 15px;
+  transition: transform 0.3s;
+}
+
+.socials a:hover {
+  transform: scale(1.2);
+  color: #e2c4a8;
+}
+</style>
+
+<!-- FontAwesome ulash uchun -->
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
